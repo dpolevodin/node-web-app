@@ -1,4 +1,6 @@
-export function mainPage(res) {
+import { loadList, loadItem } from "./model.js";
+
+export async function mainPage(res) {
   let result =
     "<!doctype html>" +
     "<html>" +
@@ -7,23 +9,31 @@ export function mainPage(res) {
     "       <title>Список запланированных дел</title>" +
     "   </head>" +
     "   <body>" +
-    "       <h1>Запланированные дела</h1>" +
-    "   </body>" +
-    "</html>";
+    "       <h1>Запланированные дела</h1>";
+  const list = await loadList();
+  for (let listItem of list) {
+    result +=
+      `<h2><a href="/${listItem._id}/">${listItem.title}</a></h2>` +
+      `<p>${listItem.desc}</p>` +
+      "<p>&nbsp;</p>";
+  }
+  result += "</body>" + "</html>";
 
   res.end(result);
 }
 
-export function detailPage(res, id) {
+export async function detailPage(res, id) {
+  const listItem = await loadItem(id);
   res.end(
     "<!doctype html>" +
       "<html>" +
       "<head>" +
       '<meta charset="UTF-8">' +
-      "<title>Дело :: Список запланированных дел</title>" +
+      `<title>${listItem.title} :: Список запланированных дел</title>` +
       "</head>" +
       "<body>" +
-      "<h1>Дело</h1>" +
+      `<h1>${listItem.title}</h1>` +
+      `<p>${listItem.desc}</p>` +
       "</body>" +
       "</html>"
   );

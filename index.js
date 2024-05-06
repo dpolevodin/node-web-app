@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
 import { URL } from "node:url";
+
 import { mainPage, errorPage, detailPage } from "./source/controllers.js";
 
 const PORT = 8000;
@@ -16,7 +17,7 @@ server.on("request", (req, res) => {
 
   if (r) {
     detailPage(res, r[1]);
-  } else if (requestedPath == "/") {
+  } else if (requestedPath === "/") {
     mainPage(res);
   } else {
     errorPage(res);
