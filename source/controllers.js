@@ -1,5 +1,14 @@
 import { loadList, loadItem } from "./model.js";
 
+/** Форматирование даты формата 2023-03-22T12:06:34.362Z в <ДД.ММ.ГГ чч:мм:сс>*/
+function formatData(unformattedData) {
+  return new Date(unformattedData).toLocaleDateString("ru", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
 export async function mainPage(res) {
   let result =
     "<!doctype html>" +
@@ -15,6 +24,7 @@ export async function mainPage(res) {
     result +=
       `<h2><a href="/${listItem._id}/">${listItem.title}</a></h2>` +
       `<p>${listItem.desc}</p>` +
+      `<p>${formatData(listItem.createdAt)}</p>` +
       "<p>&nbsp;</p>";
   }
   result += "</body>" + "</html>";
@@ -34,6 +44,7 @@ export async function detailPage(res, id) {
       "<body>" +
       `<h1>${listItem.title}</h1>` +
       `<p>${listItem.desc}</p>` +
+      `<p>${formatData(listItem.createdAt)}</p>` +
       "</body>" +
       "</html>"
   );
